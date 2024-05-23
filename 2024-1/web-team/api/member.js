@@ -1,6 +1,10 @@
 const db = require("../config/db");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const config = require("../config/env.json");
+const secretKey = config.secretKey;
 
+// 아이디 중복 검사
 function useid(req, res, next) {
   const r = req.body;
   const arr = [r.userid];
@@ -28,6 +32,7 @@ function useid(req, res, next) {
   );
 }
 
+// 회원가입
 function register(req, res, next) {
   const r = req.body;
   const encryptedPW = bcrypt.hashSync(r.userpw, 10);
@@ -63,6 +68,7 @@ function register(req, res, next) {
   );
 }
 
+// 로그인
 function login(req, res, next) {
   const r = req.body;
   const arr = [r.userid, r.userpw];
@@ -83,9 +89,17 @@ function login(req, res, next) {
         const same = bcrypt.compareSync(arr[1], results[0].userpw);
 
         if (arr[0] === results[0].userid && same === true) {
+          // 사용자 신원 확인 후
+          const payload = {
+            username: arr[0],
+            nickname: results[0].nickname,
+            role: results[0].role,
+          };
+          const token = jwt.sign(payload, secretKey);
           const result = {
             status: "success",
             msg: "로그인 성공!",
+            token: token,
           };
           res.json(result);
           return;
