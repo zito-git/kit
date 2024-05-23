@@ -1,8 +1,7 @@
 const db = require("../config/db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const config = require("../config/env.json");
-const secretKey = config.secretKey;
+require("dotenv").config();
 
 // 아이디 중복 검사
 function useid(req, res, next) {
@@ -95,7 +94,7 @@ function login(req, res, next) {
             nickname: results[0].nickname,
             role: results[0].role,
           };
-          const token = jwt.sign(payload, secretKey);
+          const token = jwt.sign(payload, process.env.ENV_SKEY);
           const result = {
             status: "success",
             msg: "로그인 성공!",
