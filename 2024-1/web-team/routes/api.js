@@ -9,7 +9,7 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
 router.get("/", function (req, res, next) {
-  res.send("info -> DISCORD");
+  res.send("info -> DISCORD API");
 });
 
 //인덱스페이지 - 나중에 분리
