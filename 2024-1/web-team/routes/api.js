@@ -32,4 +32,21 @@ router.post("/useid", memberApi.useid);
 
 router.post("/register", memberApi.register);
 
+router.post("/shop/add", function (req, res, next) {
+  // 토큰검사
+  const token = req.header("Token");
+  try {
+    const verified = jwt.verify(token, process.env.ENV_SKEY);
+  } catch {
+    const emptyToken = {
+      status: "null",
+      msg: "토큰이 없거나 잘못 되었습니다.",
+    };
+    res.send(emptyToken);
+  }
+
+  // 정보추가
+  res.send("ddd");
+});
+
 module.exports = router;
