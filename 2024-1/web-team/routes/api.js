@@ -22,8 +22,11 @@ router.get("/home", function (req, res, next) {
       status: "null",
       msg: "토큰이 없거나 잘못 되었습니다.",
     };
-    res.send(emptyToken);
+    return res.send(emptyToken);
   }
+  db.connection.query("SELECT * FROM `camp`", function (err, results, fields) {
+    return res.json(results);
+  });
 });
 
 router.post("/login", memberApi.login);
@@ -44,6 +47,18 @@ router.post("/shop/add", function (req, res, next) {
     };
     return res.send(emptyToken);
   }
+
+  // const {
+  //   name,
+  //   address,
+  //   phone,
+  //   intro,
+  //   check_in,
+  //   check_out,
+  //   charge,
+  //   member,
+  //   area_info,
+  // } = req.body;
 
   // 정보추가
   res.send("ddd");
