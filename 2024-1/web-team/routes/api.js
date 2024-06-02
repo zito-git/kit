@@ -3,6 +3,7 @@ var router = express.Router();
 var db = require("../config/db");
 const bcrypt = require("bcrypt");
 const memberApi = require("../api/member");
+const homeApi = require("../api/home");
 
 //인덱스 페이지 임시
 require("dotenv").config();
@@ -12,28 +13,19 @@ router.get("/", function (req, res, next) {
   res.send("info -> DISCORD API");
 });
 
-//인덱스페이지 - 나중에 분리
-router.get("/home", function (req, res, next) {
-  const token = req.header("Token");
-  try {
-    const verified = jwt.verify(token, process.env.ENV_SKEY);
-  } catch {
-    const emptyToken = {
-      status: "null",
-      msg: "토큰이 없거나 잘못 되었습니다.",
-    };
-    return res.send(emptyToken);
-  }
-  db.connection.query("SELECT * FROM `camp`", function (err, results, fields) {
-    return res.json(results);
-  });
-});
+//인덱스페이지
+router.get("/home", homeApi.index);
 
+//멤버페이지
 router.post("/login", memberApi.login);
 
 router.post("/useid", memberApi.useid);
 
 router.post("/register", memberApi.register);
+
+router.post("/seller/reservation", memberApi.register);
+
+//판매자(seller)페이지
 
 router.post("/shop/add", function (req, res, next) {
   // 토큰검사
