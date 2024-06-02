@@ -42,7 +42,7 @@ router.post("/shop/add", function (req, res, next) {
       status: "null",
       msg: "토큰이 없거나 잘못 되었습니다.",
     };
-    res.send(emptyToken);
+    return res.send(emptyToken);
   }
 
   // 정보추가
