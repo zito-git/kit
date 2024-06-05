@@ -5,6 +5,30 @@ const bcrypt = require("bcrypt");
 const memberApi = require("../api/member");
 const homeApi = require("../api/home");
 
+const multer = require("multer");
+
+const path = require("path");
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/assets"); // cb 콜백함수를 통해 전송된 파일 저장 디렉토리 설정
+  },
+  filename: function (req, file, cb) {
+    cb(null, new Date().valueOf() + path.extname(file.originalname)); // cb 콜백함수를 통해 전송된 파일 이름 설정
+  },
+});
+
+const upload = multer({
+  dest: "public/assets/",
+  storage: storage,
+});
+
+router.post("/upload", upload.single("image"), function (req, res, next) {
+  console.log(req.file);
+  console.log(req.body);
+  res.send("OK");
+});
+
 //인덱스 페이지 임시
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
@@ -23,7 +47,7 @@ router.post("/useid", memberApi.useid);
 
 router.post("/register", memberApi.register);
 
-router.post("/seller/reservation", memberApi.register);
+// router.post("/seller/reservation", memberApi.register);
 
 //판매자(seller)페이지
 
