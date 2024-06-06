@@ -38,6 +38,7 @@ router.post("/shop/add", upload.array("image"), function (req, res, next) {
 
   const {
     name,
+    site,
     address,
     phone,
     intro,
@@ -48,7 +49,9 @@ router.post("/shop/add", upload.array("image"), function (req, res, next) {
     area_info,
   } = req.body;
 
-  console.log(req.files);
+  for (let i = 0; i < req.files.length; i++) {
+    console.log(req.files[i].filename);
+  }
   console.log(req.body);
   res.send("OK");
 });
