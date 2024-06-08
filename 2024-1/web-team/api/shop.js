@@ -5,45 +5,34 @@ const jwt = require("jsonwebtoken");
 
 function addShopInfo(req, res, next) {
   // 토큰검사
-  // const token = req.header("Token");
-  // try {
-  //   const verified = jwt.verify(token, process.env.ENV_SKEY);
-  // } catch {
-  //   const emptyToken = {
-  //     status: "null",
-  //     msg: "토큰이 없거나 잘못 되었습니다.",
-  //   };
-  //   return res.send(emptyToken);
-  // }
+  const token = req.header("Token");
+  try {
+    const verified = jwt.verify(token, process.env.ENV_SKEY);
+  } catch {
+    const emptyToken = {
+      status: "null",
+      msg: "토큰이 없거나 잘못 되었습니다.",
+    };
+    return res.send(emptyToken);
+  }
 
-  const {
-    name,
-    site,
-    address,
-    phone,
-    intro,
-    check_in,
-    check_out,
-    charge,
-    member,
-    area_info,
-  } = req.body;
+  const { name, address, phone, intro, check_in, check_out, area_info } =
+    req.body;
 
   arr = [];
   for (let i = 0; i < req.files.length; i++) {
     arr.push("/assets/" + req.files[i].filename);
   }
+  console.log(arr);
 
   const listData = [
+    jwt.decode(token).username,
     name,
-    site,
     address,
     phone,
     intro,
     check_in,
     check_out,
-    charge,
-    member,
     JSON.stringify(area_info),
     JSON.stringify(arr),
   ];
@@ -51,7 +40,7 @@ function addShopInfo(req, res, next) {
   console.log(listData);
   //글 작성
   const sql =
-    "INSERT INTO `camp`(`c_name`, `c_site`, `c_address`, `c_phone`,`c_intro`,`c_check_in`,`c_check_out`,`c_charge`,`c_member_count`,`c_area_info`,`c_img`) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+    "INSERT INTO `camp` (`c_shop_id`,`c_name`, `c_address`, `c_phone`,`c_intro`,`c_check_in`,`c_check_out`,`c_area_info`,`c_img`) VALUES (?,?,?,?,?,?,?,?,?)";
 
   db.connection.query(sql, listData, (err, result, fields) => {
     let result02 = {
@@ -77,30 +66,29 @@ function getIdxInfo(req, res, next) {
 }
 
 function updateCampInfo(req, res, next) {
-  const {
-    idx,
-    name,
-    site,
-    address,
-    phone,
-    intro,
-    check_in,
-    check_out,
-    charge,
-    member,
-    area_info,
-  } = req.body;
+  // 토큰검사
+  const token = req.header("Token");
+  try {
+    const verified = jwt.verify(token, process.env.ENV_SKEY);
+  } catch {
+    const emptyToken = {
+      status: "null",
+      msg: "토큰이 없거나 잘못 되었습니다.",
+    };
+    return res.send(emptyToken);
+  }
+
+  const { idx, name, address, phone, intro, check_in, check_out, area_info } =
+    req.body;
 
   const listData = [
+    jwt.decode(token).username,
     name,
-    site,
     address,
     phone,
     intro,
     check_in,
     check_out,
-    charge,
-    member,
     JSON.stringify(area_info),
     idx, // idx 값
   ];
@@ -108,15 +96,13 @@ function updateCampInfo(req, res, next) {
   const sql = `
         UPDATE \`camp\`
         SET
+          c_shop_id=?,
           c_name = ?, 
-          c_site = ?, 
           c_address = ?, 
           c_phone = ?, 
           c_intro = ?, 
           c_check_in = ?, 
           c_check_out = ?, 
-          c_charge = ?, 
-          c_member_count = ?, 
           c_area_info = ?
         WHERE idx = ?
       `;

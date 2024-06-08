@@ -42,10 +42,10 @@ router.post("/useid", memberApi.useid);
 router.post("/register", memberApi.register);
 
 // 캠핑장 관련 (매장)
-router.post("/shop/add", upload.array("image"), shopApi.addShopInfo);
+router.post("/camp/add", upload.array("image"), shopApi.addShopInfo);
 
-router.get("/shop/select", shopApi.getIdxInfo);
+router.get("/camp/select", shopApi.getIdxInfo);
 
-router.post("/shop/update", shopApi.updateCampInfo);
+router.post("/camp/update", shopApi.updateCampInfo);
 
 module.exports = router;
