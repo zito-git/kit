@@ -44,6 +44,6 @@ router.post("/register", memberApi.register);
 // 매장
 router.post("/shop/add", upload.array("image"), shopApi.addShopInfo);
 
-router.post("/shop/select", shopApi.getIdxInfo);
+router.get("/shop/select", shopApi.getIdxInfo);
 
 module.exports = router;
