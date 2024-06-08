@@ -6,6 +6,8 @@ const memberApi = require("../api/member");
 const homeApi = require("../api/home");
 const shopApi = require("../api/camp");
 const siteApi = require("../api/site");
+const reviewApi = require("../api/review");
+const reservation = require("../api/reservation");
 const multer = require("multer");
 const path = require("path");
 
@@ -49,6 +51,9 @@ router.get("/camp/select", shopApi.getIdxInfo);
 
 router.post("/camp/update", shopApi.updateCampInfo);
 
+// 캠핑장 검색관련
+router.get("/search", shopApi.search);
+
 // 캠핑장 사이트 관련
 router.post("/site/add", upload.array("image"), siteApi.addSite);
 
@@ -58,72 +63,18 @@ router.get("/site/all", siteApi.allSite);
 
 router.post("/site/update", siteApi.updateSite);
 
-// 캠핑장 검색관련
-router.get("/search", function (req, res, next) {
-  // 토큰검사
-  const token = req.header("Token");
-  try {
-    const verified = jwt.verify(token, process.env.ENV_SKEY);
-  } catch {
-    const emptyToken = {
-      status: "null",
-      msg: "토큰이 없거나 잘못 되었습니다.",
-    };
-    return res.send(emptyToken);
-  }
+// 리뷰 관련
+router.post("/review/add", upload.array("image"), reviewApi.addReview);
 
-  let { method, query } = req.query;
-  query = "%" + query + "%";
+router.get("/review/all", upload.array("image"), reviewApi.allReview);
 
-  if (method == "name") {
-    db.connection.query(
-      "SELECT * FROM `camp` WHERE `c_name` LIKE ?",
-      query,
-      function (err, results, fields) {
-        console.log(results);
-        return res.json(results);
-      }
-    );
-  } else if (method == "address") {
-    db.connection.query(
-      "SELECT * FROM `camp` WHERE `c_address` LIKE ?",
-      query,
-      function (err, results, fields) {
-        console.log(results);
-        return res.json(results);
-      }
-    );
-  } else if (method == "category") {
-    db.connection.query(
-      "SELECT * FROM `camp` WHERE `c_category` LIKE ?",
-      query,
-      function (err, results, fields) {
-        console.log(results);
-        return res.json(results);
-      }
-    );
-  } else {
-    db.connection.query(
-      `SELECT * FROM camp WHERE 
-        c_category LIKE ? OR 
-        c_name LIKE ? OR 
-        c_address LIKE ? OR 
-        c_phone LIKE ? OR 
-        c_intro LIKE ? OR 
-        c_check_in LIKE ? OR 
-        c_check_out LIKE ? OR 
-        c_area_info LIKE ?`,
-      [query, query, query, query, query, query, query, query],
-      function (err, results, fields) {
-        if (err) {
-          console.error(err);
-          return res.status(500).json({ error: "Database query error" });
-        }
-        console.log(results);
-        return res.json(results);
-      }
-    );
-  }
-});
+// 예약 관련
+router.post("/res", reservation.isResOk);
+
+router.post("/res/submit", reservation.resSubmit);
+
+router.post("/res/define", reservation.resAdminChange);
+
+router.post("/res/mypage", reservation.showMypage);
 
 module.exports = router;

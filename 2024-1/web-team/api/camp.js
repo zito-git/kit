@@ -131,4 +131,71 @@ function updateCampInfo(req, res, next) {
   });
 }
 
-module.exports = { addShopInfo, getIdxInfo, updateCampInfo };
+function search(req, res, next) {
+  // 토큰검사
+  const token = req.header("Token");
+  try {
+    const verified = jwt.verify(token, process.env.ENV_SKEY);
+  } catch {
+    const emptyToken = {
+      status: "null",
+      msg: "토큰이 없거나 잘못 되었습니다.",
+    };
+    return res.send(emptyToken);
+  }
+
+  let { method, query } = req.query;
+  query = "%" + query + "%";
+
+  if (method == "name") {
+    db.connection.query(
+      "SELECT * FROM `camp` WHERE `c_name` LIKE ?",
+      query,
+      function (err, results, fields) {
+        console.log(results);
+        return res.json(results);
+      }
+    );
+  } else if (method == "address") {
+    db.connection.query(
+      "SELECT * FROM `camp` WHERE `c_address` LIKE ?",
+      query,
+      function (err, results, fields) {
+        console.log(results);
+        return res.json(results);
+      }
+    );
+  } else if (method == "category") {
+    db.connection.query(
+      "SELECT * FROM `camp` WHERE `c_category` LIKE ?",
+      query,
+      function (err, results, fields) {
+        console.log(results);
+        return res.json(results);
+      }
+    );
+  } else {
+    db.connection.query(
+      `SELECT * FROM camp WHERE 
+          c_category LIKE ? OR 
+          c_name LIKE ? OR 
+          c_address LIKE ? OR 
+          c_phone LIKE ? OR 
+          c_intro LIKE ? OR 
+          c_check_in LIKE ? OR 
+          c_check_out LIKE ? OR 
+          c_area_info LIKE ?`,
+      [query, query, query, query, query, query, query, query],
+      function (err, results, fields) {
+        if (err) {
+          console.error(err);
+          return res.status(500).json({ error: "Database query error" });
+        }
+        console.log(results);
+        return res.json(results);
+      }
+    );
+  }
+}
+
+module.exports = { addShopInfo, getIdxInfo, updateCampInfo, search };

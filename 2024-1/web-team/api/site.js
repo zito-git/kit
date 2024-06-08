@@ -25,6 +25,10 @@ function addSite(req, res, next) {
   console.log(arr);
   console.log(req.files);
 
+  //인덱스번호로 변경해야함
+  //인덱스번호로 변경해야함
+  //인덱스번호로 변경해야함
+
   const listData = [
     jwt.decode(token).username,
     category,
