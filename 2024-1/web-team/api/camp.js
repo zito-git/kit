@@ -16,8 +16,16 @@ function addShopInfo(req, res, next) {
     return res.send(emptyToken);
   }
 
-  const { name, address, phone, intro, check_in, check_out, area_info } =
-    req.body;
+  const {
+    name,
+    category,
+    address,
+    phone,
+    intro,
+    check_in,
+    check_out,
+    area_info,
+  } = req.body;
 
   arr = [];
   for (let i = 0; i < req.files.length; i++) {
@@ -27,6 +35,7 @@ function addShopInfo(req, res, next) {
 
   const listData = [
     jwt.decode(token).username,
+    JSON.stringify(category),
     name,
     address,
     phone,
@@ -40,7 +49,7 @@ function addShopInfo(req, res, next) {
   console.log(listData);
   //글 작성
   const sql =
-    "INSERT INTO `camp` (`c_shop_id`,`c_name`, `c_address`, `c_phone`,`c_intro`,`c_check_in`,`c_check_out`,`c_area_info`,`c_img`) VALUES (?,?,?,?,?,?,?,?,?)";
+    "INSERT INTO `camp` (`c_shop_id`,`c_category`,`c_name`, `c_address`, `c_phone`,`c_intro`,`c_check_in`,`c_check_out`,`c_area_info`,`c_img`) VALUES (?,?,?,?,?,?,?,?,?,?)";
 
   db.connection.query(sql, listData, (err, result, fields) => {
     let result02 = {
@@ -78,11 +87,21 @@ function updateCampInfo(req, res, next) {
     return res.send(emptyToken);
   }
 
-  const { idx, name, address, phone, intro, check_in, check_out, area_info } =
-    req.body;
+  const {
+    idx,
+    category,
+    name,
+    address,
+    phone,
+    intro,
+    check_in,
+    check_out,
+    area_info,
+  } = req.body;
 
   const listData = [
     jwt.decode(token).username,
+    JSON.stringify(category),
     name,
     address,
     phone,
@@ -97,6 +116,7 @@ function updateCampInfo(req, res, next) {
         UPDATE \`camp\`
         SET
           c_shop_id=?,
+          c_category=?,
           c_name = ?, 
           c_address = ?, 
           c_phone = ?, 

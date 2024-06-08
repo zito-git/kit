@@ -27,7 +27,7 @@ function addSite(req, res, next) {
 
   const listData = [
     jwt.decode(token).username,
-    JSON.stringify(category),
+    category,
     site,
     charge,
     member_count,
@@ -85,9 +85,15 @@ function allSite(req, res, next) {
     return res.send(emptyToken);
   }
 
-  db.connection.query("SELECT * FROM `site`", function (err, results, fields) {
-    return res.json(results);
-  });
+  const shop = req.query.shop_id;
+
+  db.connection.query(
+    "SELECT * FROM `site` WHERE `shop_id`=?",
+    shop,
+    function (err, results, fields) {
+      return res.json(results);
+    }
+  );
 }
 
 function updateSite(req, res, next) {
