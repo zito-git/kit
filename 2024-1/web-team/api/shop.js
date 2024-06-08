@@ -76,4 +76,53 @@ function getIdxInfo(req, res, next) {
   );
 }
 
-module.exports = { addShopInfo, getIdxInfo };
+function updateCampInfo(req, res, next) {
+  const {
+    idx,
+    name,
+    site,
+    address,
+    phone,
+    intro,
+    check_in,
+    check_out,
+    charge,
+    member,
+    area_info,
+  } = req.body;
+
+  const listData = [
+    name,
+    site,
+    address,
+    phone,
+    intro,
+    check_in,
+    check_out,
+    charge,
+    member,
+    JSON.stringify(area_info),
+    idx, // idx 값
+  ];
+
+  const sql = `
+        UPDATE \`camp\`
+        SET
+          c_name = ?, 
+          c_site = ?, 
+          c_address = ?, 
+          c_phone = ?, 
+          c_intro = ?, 
+          c_check_in = ?, 
+          c_check_out = ?, 
+          c_charge = ?, 
+          c_member_count = ?, 
+          c_area_info = ?
+        WHERE idx = ?
+      `;
+  db.connection.query(sql, listData, function (err, results, fields) {
+    return res.json(results);
+  });
+}
+
+module.exports = { addShopInfo, getIdxInfo, updateCampInfo };

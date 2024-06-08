@@ -8,7 +8,7 @@ const shopApi = require("../api/shop");
 const multer = require("multer");
 const path = require("path");
 
-//업로드
+//업로드 (multer)
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "public/assets"); // cb 콜백함수를 통해 전송된 파일 저장 디렉토리 설정
@@ -41,9 +41,11 @@ router.post("/useid", memberApi.useid);
 
 router.post("/register", memberApi.register);
 
-// 매장
+// 캠핑장 관련 (매장)
 router.post("/shop/add", upload.array("image"), shopApi.addShopInfo);
 
 router.get("/shop/select", shopApi.getIdxInfo);
+
+router.post("/shop/update", shopApi.updateCampInfo);
 
 module.exports = router;
