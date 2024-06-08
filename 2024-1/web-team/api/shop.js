@@ -64,4 +64,16 @@ function addShopInfo(req, res, next) {
   // res.send("OK");
 }
 
-module.exports = { addShopInfo };
+function getIdxInfo(req, res, next) {
+  const idx = req.body.idx;
+  console.log(idx);
+  db.connection.query(
+    "SELECT * FROM `camp` WHERE `idx` = ?",
+    idx,
+    function (err, results, fields) {
+      return res.json(results[0]);
+    }
+  );
+}
+
+module.exports = { addShopInfo, getIdxInfo };
