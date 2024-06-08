@@ -43,6 +43,7 @@ function addShopInfo(req, res, next) {
     check_in,
     check_out,
     charge,
+    member,
     JSON.stringify(area_info),
     JSON.stringify(arr),
   ];
@@ -50,7 +51,7 @@ function addShopInfo(req, res, next) {
   console.log(listData);
   //글 작성
   const sql =
-    "INSERT INTO `camp`(`c_name`, `c_site`, `c_address`, `c_phone`,`c_intro`,`c_check_in`,`c_check_out`,`c_charge`,`c_area_info`,`c_img`) VALUES (?,?,?,?,?,?,?,?,?,?)";
+    "INSERT INTO `camp`(`c_name`, `c_site`, `c_address`, `c_phone`,`c_intro`,`c_check_in`,`c_check_out`,`c_charge`,`c_member_count`,`c_area_info`,`c_img`) VALUES (?,?,?,?,?,?,?,?,?,?)";
 
   db.connection.query(sql, listData, (err, result, fields) => {
     let result02 = {
