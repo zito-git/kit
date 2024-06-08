@@ -4,7 +4,7 @@ var db = require("../config/db");
 const bcrypt = require("bcrypt");
 const memberApi = require("../api/member");
 const homeApi = require("../api/home");
-const shopApi = require("../api/shop");
+const shopApi = require("../api/camp");
 const multer = require("multer");
 const path = require("path");
 
