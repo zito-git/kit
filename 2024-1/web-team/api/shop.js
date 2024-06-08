@@ -65,7 +65,7 @@ function addShopInfo(req, res, next) {
 }
 
 function getIdxInfo(req, res, next) {
-  const idx = req.body.idx;
+  const idx = req.query.idx;
   console.log(idx);
   db.connection.query(
     "SELECT * FROM `camp` WHERE `idx` = ?",
