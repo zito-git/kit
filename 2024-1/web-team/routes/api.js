@@ -49,6 +49,8 @@ router.post("/camp/add", upload.array("image"), shopApi.addShopInfo);
 
 router.get("/camp/select", shopApi.getIdxInfo);
 
+router.get("/camp/all", shopApi.getCampAll);
+
 router.post("/camp/update", shopApi.updateCampInfo);
 
 // 캠핑장 검색관련
