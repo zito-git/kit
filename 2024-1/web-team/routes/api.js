@@ -53,6 +53,11 @@ router.get("/camp/all", shopApi.getCampAll);
 
 router.post("/camp/update", shopApi.updateCampInfo);
 
+//추가사항
+router.get("/camp/shop_site", shopApi.getCampId);
+
+router.get("/camp/shop_list", shopApi.getShopToken);
+
 // 캠핑장 검색관련
 router.get("/camp/search", shopApi.search);
 
