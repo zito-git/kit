@@ -90,6 +90,7 @@ function login(req, res, next) {
         if (arr[0] === results[0].userid && same === true) {
           // 사용자 신원 확인 후
           const payload = {
+            idx: results[0].idx,
             username: arr[0],
             nickname: results[0].nickname,
             role: results[0].role,
@@ -99,6 +100,7 @@ function login(req, res, next) {
             status: "success",
             msg: "로그인 성공!",
             token: token,
+            data: jwt.decode(token),
           };
           res.json(result);
           return;
