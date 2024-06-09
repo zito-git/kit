@@ -73,6 +73,18 @@ function resSubmit(req, res, next) {
 }
 
 function resAdminChange(req, res, next) {
+  // 토큰검사
+  const token = req.header("Token");
+  try {
+    const verified = jwt.verify(token, process.env.ENV_SKEY);
+  } catch {
+    const emptyToken = {
+      status: "null",
+      msg: "토큰이 없거나 잘못 되었습니다.",
+    };
+    return res.send(emptyToken);
+  }
+
   const { idx, status } = req.body;
 
   const listData = [status, idx];
@@ -89,6 +101,18 @@ function resAdminChange(req, res, next) {
 }
 
 function showMypage(req, res, next) {
+  // 토큰검사
+  const token = req.header("Token");
+  try {
+    const verified = jwt.verify(token, process.env.ENV_SKEY);
+  } catch {
+    const emptyToken = {
+      status: "null",
+      msg: "토큰이 없거나 잘못 되었습니다.",
+    };
+    return res.send(emptyToken);
+  }
+
   const { myid } = req.body;
   db.connection.query(
     "SELECT * FROM `reservation` WHERE `r_userid`=?",
