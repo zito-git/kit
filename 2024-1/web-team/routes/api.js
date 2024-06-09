@@ -68,7 +68,7 @@ router.post("/site/update", siteApi.updateSite);
 // 리뷰 관련
 router.post("/review/add", upload.array("image"), reviewApi.addReview);
 
-router.get("/review/all", upload.array("image"), reviewApi.allReview);
+router.get("/review/all", reviewApi.allReview);
 
 // 예약 관련
 router.post("/res", reservation.isResOk);

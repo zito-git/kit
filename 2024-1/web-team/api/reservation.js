@@ -32,6 +32,19 @@ function isResOk(req, res, next) {
 }
 
 function resSubmit(req, res, next) {
+  // 토큰검사
+  const token = req.header("Token");
+  try {
+    const verified = jwt.verify(token, process.env.ENV_SKEY);
+  } catch {
+    const emptyToken = {
+      status: "null",
+      msg: "토큰이 없거나 잘못 되었습니다.",
+    };
+    return res.send(emptyToken);
+  }
+
+  const { date, camp_idx, userid, site } = req.body;
   db.connection.query(
     "SELECT * FROM `reservation` WHERE r_date = ? AND r_site=?",
     [date, site],
