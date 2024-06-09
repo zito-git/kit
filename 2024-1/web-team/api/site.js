@@ -114,11 +114,9 @@ function updateSite(req, res, next) {
     return res.send(emptyToken);
   }
 
-  const { idx, shop_id, category, site, charge, member_count, status } =
-    req.body;
+  const { idx, category, site, charge, member_count, status } = req.body;
 
   const listData = [
-    jwt.decode(token).username,
     category,
     site,
     charge,
@@ -130,7 +128,6 @@ function updateSite(req, res, next) {
   const sql = `
         UPDATE \`site\`
         SET
-          shop_id=?,
           category = ?, 
           site = ?, 
           charge = ?, 
