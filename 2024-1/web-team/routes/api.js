@@ -52,7 +52,7 @@ router.get("/camp/select", shopApi.getIdxInfo);
 router.post("/camp/update", shopApi.updateCampInfo);
 
 // 캠핑장 검색관련
-router.get("/search", shopApi.search);
+router.get("/camp/search", shopApi.search);
 
 // 캠핑장 사이트 관련
 router.post("/site/add", upload.array("image"), siteApi.addSite);
