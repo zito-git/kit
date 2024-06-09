@@ -16,7 +16,7 @@ function addSite(req, res, next) {
     return res.send(emptyToken);
   }
 
-  const { category, site, charge, member_count, status } = req.body;
+  const { idx, category, site, charge, member_count, status } = req.body;
 
   arr = [];
   for (let i = 0; i < req.files.length; i++) {
@@ -30,7 +30,8 @@ function addSite(req, res, next) {
   //인덱스번호로 변경해야함
 
   const listData = [
-    jwt.decode(token).username,
+    // jwt.decode(token).username,
+    idx,
     category,
     site,
     charge,
