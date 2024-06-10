@@ -267,6 +267,30 @@ function getShopToken(req, res, next) {
   );
 }
 
+function isOkCamp(req, res, next) {
+  // 토큰검사
+  const token = req.header("Token");
+  try {
+    const verified = jwt.verify(token, process.env.ENV_SKEY);
+  } catch {
+    const emptyToken = {
+      status: "null",
+      msg: "토큰이 없거나 잘못 되었습니다.",
+    };
+    return res.send(emptyToken);
+  }
+
+  const myCamp = req.query.campid;
+
+  let myRes = "";
+
+  if (myCamp === jwt.decode(token).username) {
+    myRes = { msg: "본인 캠핑장이 맞습니다", status: "OK" };
+  } else {
+    myRes = { msg: "본인 캠핑장이 맞습니다", status: "FAIL" };
+  }
+}
+
 module.exports = {
   addShopInfo,
   getIdxInfo,
@@ -275,4 +299,5 @@ module.exports = {
   getCampAll,
   getCampId,
   getShopToken,
+  isOkCamp,
 };

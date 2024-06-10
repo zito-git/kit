@@ -53,10 +53,13 @@ router.get("/camp/all", shopApi.getCampAll);
 
 router.post("/camp/update", shopApi.updateCampInfo);
 
-//추가사항
+// 추가사항
 router.get("/camp/shop_site", shopApi.getCampId);
 
 router.get("/camp/shop_list", shopApi.getShopToken);
+
+// 추가사항  캠핑장 본인(사장)이 맞는지 확인
+router.get("/camp/mycamp", shopApi.isOkCamp);
 
 // 캠핑장 검색관련
 router.get("/camp/search", shopApi.search);
