@@ -286,8 +286,10 @@ function isOkCamp(req, res, next) {
 
   if (myCamp === jwt.decode(token).username) {
     myRes = { msg: "본인 캠핑장이 맞습니다", status: "OK" };
+    res.json(myRes);
   } else {
     myRes = { msg: "본인 캠핑장이 맞습니다", status: "FAIL" };
+    res.json(myRes);
   }
 }
 
