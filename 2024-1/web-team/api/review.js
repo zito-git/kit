@@ -62,6 +62,7 @@ function myReview(req, res, next) {
     };
     return res.send(emptyToken);
   }
+
   const idx = req.query.idx;
   db.connection.query(
     "SELECT * FROM `review` WHERE `reservation_idx`=?",

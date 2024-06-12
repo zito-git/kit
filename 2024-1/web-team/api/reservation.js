@@ -19,13 +19,13 @@ function isResOk(req, res, next) {
   const { date, enddate, camp_idx, site } = req.body;
 
   db.connection.query(
-    "SELECT * FROM `reservation` WHERE r_date = ? AND r_end_date = ? AND r_site=?",
+    "SELECT * FROM `reservation` WHERE r_date = ? OR r_end_date = ? OR r_site=?",
     [date, enddate, site],
     function (err, results, fields) {
       if (results[0] != undefined) {
-        return res.json({ msg: "예약 불가" });
+        return res.json({ msg: "예약대기" });
       } else {
-        return res.json({ msg: "예약 가능" });
+        return res.json({ msg: "예약가능" });
       }
     }
   );
@@ -46,7 +46,7 @@ function resSubmit(req, res, next) {
 
   const { date, enddate, camp_idx, userid, site } = req.body;
   db.connection.query(
-    "SELECT * FROM `reservation` WHERE r_date = ? AND r_end_date = ? AND r_site=?",
+    "SELECT * FROM `reservation` WHERE r_date = ? OR r_end_date = ? OR r_site=?",
     [date, enddate, site],
     function (err, results, fields) {
       if (results[0] != undefined) {
@@ -58,7 +58,7 @@ function resSubmit(req, res, next) {
 
         db.connection.query(
           sql,
-          [date, enddate, camp_idx, site, userid, "예약상태"],
+          [date, enddate, camp_idx, site, userid, "예약대기"],
           (err, result, fields) => {
             let result02 = {
               status: "success",
