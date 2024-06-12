@@ -16,11 +16,11 @@ function isResOk(req, res, next) {
     return res.send(emptyToken);
   }
 
-  const { date, camp_idx, site } = req.body;
+  const { date, enddate, camp_idx, site } = req.body;
 
   db.connection.query(
-    "SELECT * FROM `reservation` WHERE r_date = ? AND r_site=?",
-    [date, site],
+    "SELECT * FROM `reservation` WHERE r_date = ? AND r_end_date = ? AND r_site=?",
+    [date, enddate, site],
     function (err, results, fields) {
       if (results[0] != undefined) {
         return res.json({ msg: "예약 불가" });
@@ -44,20 +44,20 @@ function resSubmit(req, res, next) {
     return res.send(emptyToken);
   }
 
-  const { date, camp_idx, userid, site } = req.body;
+  const { date, enddate, camp_idx, userid, site } = req.body;
   db.connection.query(
-    "SELECT * FROM `reservation` WHERE r_date = ? AND r_site=?",
+    "SELECT * FROM `reservation` WHERE r_date = ? AND r_end_date = ? AND r_site=?",
     [date, site],
     function (err, results, fields) {
       if (results[0] != undefined) {
         return res.json({ msg: "예약불가" });
       } else {
         const sql =
-          "INSERT INTO `reservation`(`r_date`,`camp_idx`, `r_site`, `r_userid`, `r_status`) VALUES (?,?,?,?,?)";
+          "INSERT INTO `reservation`(`r_date`, `r_end_date` ,`camp_idx`, `r_site`, `r_userid`, `r_status`) VALUES (?,?,?,?,?,?)";
 
         db.connection.query(
           sql,
-          [date, camp_idx, site, userid, "예약상태"],
+          [date, enddate, camp_idx, site, userid, "예약상태"],
           (err, result, fields) => {
             let result02 = {
               status: "success",
