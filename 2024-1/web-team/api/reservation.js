@@ -47,9 +47,10 @@ function resSubmit(req, res, next) {
   const { date, enddate, camp_idx, userid, site } = req.body;
   db.connection.query(
     "SELECT * FROM `reservation` WHERE r_date = ? AND r_end_date = ? AND r_site=?",
-    [date, site],
+    [date, enddate, site],
     function (err, results, fields) {
       if (results[0] != undefined) {
+        console.log(results);
         return res.json({ msg: "예약불가" });
       } else {
         const sql =
