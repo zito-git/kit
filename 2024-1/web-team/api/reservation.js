@@ -19,7 +19,12 @@ function isResOk(req, res, next) {
   const { date, enddate, camp_idx, site } = req.body;
 
   db.connection.query(
-    "SELECT * FROM `reservation` WHERE r_date = ? OR r_end_date = ? OR r_site=?",
+    `
+      SELECT * 
+      FROM reservation 
+      WHERE (r_date = ? OR r_end_date = ?) 
+      AND r_site = ?;
+    `,
     [date, enddate, site],
     function (err, results, fields) {
       if (results[0] != undefined) {
@@ -46,7 +51,12 @@ function resSubmit(req, res, next) {
 
   const { date, enddate, camp_idx, userid, site } = req.body;
   db.connection.query(
-    "SELECT * FROM `reservation` WHERE r_date = ? OR r_end_date = ? OR r_site=?",
+    `
+    SELECT * 
+    FROM reservation 
+    WHERE (r_date = ? OR r_end_date = ?) 
+    AND r_site = ?;
+  `,
     [date, enddate, site],
     function (err, results, fields) {
       if (results[0] != undefined) {
