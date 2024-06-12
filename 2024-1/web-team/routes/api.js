@@ -89,6 +89,6 @@ router.post("/res/define", reservation.resAdminChange);
 
 router.post("/res/mypage", reservation.showMypage);
 
-router.post("/res/list", reservation.showList);
+router.get("/res/list", reservation.showList);
 
 module.exports = router;

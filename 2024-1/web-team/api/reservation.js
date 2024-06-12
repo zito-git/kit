@@ -137,7 +137,7 @@ function showList(req, res, next) {
     return res.send(emptyToken);
   }
 
-  const { idx } = req.body;
+  const { idx } = req.query;
   db.connection.query(
     "SELECT * FROM `reservation` WHERE `camp_idx`=?",
     idx,
