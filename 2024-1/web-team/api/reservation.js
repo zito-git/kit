@@ -30,30 +30,31 @@ function isResOk(req, res, next) {
 
   let { date, enddate, camp_idx, site } = req.body;
 
+  date = new Date(date);
+  enddate = new Date(enddate);
+
   db.connection.query(
     `
             SELECT *
             FROM reservation
             WHERE r_site = ? AND camp_idx = ? 
-              AND (r_date <= ? AND r_end_date >= ?)
         `,
     [site, camp_idx, date, enddate],
     function (err, results, fields) {
-      if (results[0] == undefined) {
-        const msg = { msg: "예약가능" };
-        res.json(msg);
-        return;
-      } else {
-        if (results[0].r_status === "예약확정") {
-          const msg = { msg: "예약확정으로 인한 예약불가" };
-          res.json(msg);
-          return;
-        } else {
-          const msg = { msg: "예약 대기" };
-          res.json(msg);
+      for (let i = 0; i < results.length; i++) {
+        let dbDate = new Date(results[i].r_date);
+        let dbEnd = new Date(results[i].r_end_date);
+        if (
+          (dbDate >= date && dbDate < enddate) ||
+          (dbEnd >= date && dbEnd < enddate)
+        ) {
+          res.json(results[i]);
           return;
         }
       }
+
+      res.json("예약가능");
+      return;
     }
   );
 }
