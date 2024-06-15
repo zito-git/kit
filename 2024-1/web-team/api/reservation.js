@@ -35,13 +35,9 @@ function isResOk(req, res, next) {
             SELECT *
             FROM reservation
             WHERE r_site = ? AND camp_idx = ? 
-              AND (
-                  (r_date >= ? AND r_end_date <= ?) 
-                  AND 
-                  (r_date <= ? AND r_end_date >= ?)
-              )
+              AND (r_date <= ? AND r_end_date >= ?)
         `,
-    [site, camp_idx, date, enddate, date, enddate],
+    [site, camp_idx, date, enddate],
     function (err, results, fields) {
       if (results[0] == undefined) {
         const msg = { msg: "예약가능" };
