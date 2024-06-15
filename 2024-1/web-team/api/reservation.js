@@ -37,7 +37,7 @@ function isResOk(req, res, next) {
             WHERE r_site = ? AND camp_idx = ? 
               AND (
                   (r_date >= ? AND r_end_date <= ?) 
-                  OR 
+                  AND 
                   (r_date <= ? AND r_end_date >= ?)
               )
         `,
