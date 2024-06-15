@@ -3,6 +3,18 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
+function allResShow(req, res, next) {
+  db.connection.query(
+    `
+         SELECT * FROM reservation WHERE r_status LIKE ?
+        `,
+    "%예약%",
+    function (err, results, fields) {
+      res.json(results);
+    }
+  );
+}
+
 function isResOk(req, res, next) {
   // 토큰검사
   const token = req.header("Token");
@@ -155,4 +167,11 @@ function showList(req, res, next) {
   );
 }
 
-module.exports = { isResOk, resSubmit, resAdminChange, showMypage, showList };
+module.exports = {
+  isResOk,
+  resSubmit,
+  resAdminChange,
+  showMypage,
+  showList,
+  allResShow,
+};

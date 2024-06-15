@@ -83,6 +83,8 @@ router.get("/review/myreview", reviewApi.myReview);
 // 예약 관련
 router.post("/res", reservation.isResOk);
 
+router.get("/res/all", reservation.allResShow);
+
 router.post("/res/submit", reservation.resSubmit);
 
 router.post("/res/define", reservation.resAdminChange);
